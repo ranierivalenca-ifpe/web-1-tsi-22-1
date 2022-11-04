@@ -4,23 +4,27 @@
   import Home from './lib/Home.svelte';
   import Login from './lib/Login.svelte';
   import Register from './lib/Register.svelte';
-  import { page } from './stores';
+  import { page, currentUser } from './stores';
   
-  let currentPage
-  page.subscribe(value => {
-    currentPage = value
-  })
+  function logout() {
+    $currentUser = false;
+  }
 
 </script>
 
 <main>
-  <h1>Meus ursinhos ({currentPage})</h1>
-  {#if currentPage == 'home'}
+  ({$currentUser})
+  <h1>Meus ursinhos ({$page})</h1>
+  {#if $page == 'home'}
     <Home />
-  {:else if currentPage == 'login'}
+  {:else if !$currentUser && $page == 'login'}
     <Login />
-  {:else if currentPage == 'register'}
+  {:else if !$currentUser && $page == 'register'}
     <Register />
+  {/if}
+
+  {#if $currentUser}
+    <button on:click={logout}>logout</button>
   {/if}
 
 </main>
