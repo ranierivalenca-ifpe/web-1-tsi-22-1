@@ -1,5 +1,6 @@
 <script>
-import { page, users } from "../stores";
+import Logado from './Logado.svelte';
+import { page, users, currentUser } from "../stores";
 
 function changePage(v) {
   page.update(() => v);
@@ -12,12 +13,13 @@ function changePage(v) {
 
 </script>
 <h2>Home</h2>
-<button on:click={() => changePage('login')}>
-  Login
-</button>
-<button on:click={() => changePage('register')}>
-  Register
-</button>
-{#each $users as u}
-  <div>{u.username} / {u.password}</div>
-{/each}
+{#if !$currentUser}
+  <button on:click={() => changePage('login')}>
+    Login
+  </button>
+  <button on:click={() => changePage('register')}>
+    Register
+  </button>
+{:else}
+  <Logado />
+{/if}
